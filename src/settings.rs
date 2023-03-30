@@ -1,7 +1,7 @@
 use config::{Config, ConfigError, File};
-use dirs::config_dir;
 use serde::Deserialize;
 use std::collections::HashMap;
+use std::env::var;
 
 #[derive(Debug, Deserialize)]
 pub struct Settings {
@@ -10,19 +10,13 @@ pub struct Settings {
 
 impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
-        if let Some(dir) = config_dir() {
-            let mut dir = dir;
-            dir.push("heimdallr.toml");
+        let config_path = var("XDG_CONFIG_HOME")
+            .or_else(|_| var("HOME").map(|home| format!("{}/.config/heimdallr.toml", home)))
+            .unwrap();
+        let mut s = Config::default();
+        s.merge(File::with_name(config_path.as_str()))?;
 
-            let mut s = Config::default();
-            s.merge(File::from(dir))?;
-
-            return s.try_into();
-        }
-
-        Err(ConfigError::Message(String::from(
-            "Unable to determine configuration directory.",
-        )))
+        s.try_into()
     }
 }
 
