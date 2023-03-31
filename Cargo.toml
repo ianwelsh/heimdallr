@@ -1,7 +1,6 @@
 [package]
 name = "heimdallr"
 version = "0.4.0"
-authors = ["Matthew M. Keeler <keelerm84@gmail.com>"]
 edition = "2021"
 publish = false
 
