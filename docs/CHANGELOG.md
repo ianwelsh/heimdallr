@@ -2,6 +2,24 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [0.4.0](https://github.com/ianwelsh/heimdallr/compare/0.3.0..0.4.0) - 2023-03-31
+#### Bug Fixes
+- how do you toml? - ([7d6989f](https://github.com/ianwelsh/heimdallr/commit/7d6989f4dacf44622a9512092286321a1d4f0922)) - Ian Welsh
+- replace prettytable with comfy-table - ([24a27ab](https://github.com/ianwelsh/heimdallr/commit/24a27abe24524ca09790d58e43b3ea0900fbec6c)) - Ian Welsh
+- default to ~/.config/heimdallr.toml for mac and linux; drop windows - ([65df5ad](https://github.com/ianwelsh/heimdallr/commit/65df5adbbe5e496784abbef302a77c71b082db06)) - Ian Welsh
+#### Features
+- spawn an ssh process instead of just printing ssh string - ([849a4b8](https://github.com/ianwelsh/heimdallr/commit/849a4b863f22ba3829153bc350a9e7d02920f9c2)) - Ian Welsh
+#### Miscellaneous Chores
+- clippy is too picky - ([0c0a04c](https://github.com/ianwelsh/heimdallr/commit/0c0a04cd9683f996ec247f4e39c0c2adc72091fb)) - Ian Welsh
+- bump rust edition - ([b72f3bb](https://github.com/ianwelsh/heimdallr/commit/b72f3bbc8b0030d1d35c9dfa499c8984155b45d0)) - Ian Welsh
+- more release prep - ([dbfa992](https://github.com/ianwelsh/heimdallr/commit/dbfa9925b25f15908d0b27c9089cb731f5e05cd0)) - Ian Welsh
+- preparing to release from my fork - ([c37ebac](https://github.com/ianwelsh/heimdallr/commit/c37ebacb04c2147979a368b537ba841477a9aa6b)) - Ian Welsh
+- update self_update (fixes "will be rejected by a future Rust" warning) - ([83505f0](https://github.com/ianwelsh/heimdallr/commit/83505f0dabd4b3c8f59008aafae43fd3e72906c6)) - Ian Welsh
+- update config package (fixes "will be rejected by a future Rust" warning) - ([cef16d0](https://github.com/ianwelsh/heimdallr/commit/cef16d06ec0dec0f29addaf3eaecd8a07640e1cd)) - Ian Welsh
+- remove unused dirs package - ([59bfb4f](https://github.com/ianwelsh/heimdallr/commit/59bfb4fd1e446739701923126a62e5f2dea24d9d)) - Ian Welsh
+
+- - -
+
 ## 0.3.0 - 2021-10-20
 
 
