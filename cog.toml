@@ -3,7 +3,6 @@
 # `{{version}}` will be interpreted as your target version
 pre_bump_hooks = [
     "cargo test",
-    "cargo clippy",
     "cargo build --release",
     "cargo bump {{version}}"
 ]
