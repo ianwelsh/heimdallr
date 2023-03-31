@@ -118,7 +118,7 @@ ssh -i ~/.ssh/id_rsa -p 1234 -A -t example-user@bastion.example.io "ssh -A -t ec
 
 ## Release process
 
-Install [cargo-make][cargo-make] and run the following command on main.
+Install [cargo-make][cargo-make] and [cargo-bump][cargo-bump], then run the following command on main.
 
 ```console
 cargo make release
@@ -149,3 +149,4 @@ the original project [here][heimdall].
 
 [heimdall]: https://github.com/needcaffeine/heimdall
 [cargo-make]: https://github.com/sagiegurari/cargo-make
+[cargo-bump]: https://github.com/wraithan/cargo-bump
