@@ -209,7 +209,7 @@ async fn main() -> Result<()> {
         Command::Update => {
             tokio::task::spawn_blocking(move || {
                 let status = self_update::backends::github::Update::configure()
-                    .repo_owner("keelerm84")
+                    .repo_owner("ianwelsh")
                     .repo_name(env!("CARGO_PKG_NAME"))
                     .bin_name("heimdallr")
                     .show_download_progress(true)

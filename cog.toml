@@ -1,5 +1,5 @@
 # Optional github repository url, used mainly to generate changelog links
-github = "https://github.com/keelerm84/heimdallr"
+github = "https://github.com/ianwelsh/heimdallr"
 
 # Optional changelog path ("CHANGELOG.md" if omitted)
 changelog_path = "docs/CHANGELOG.md"
