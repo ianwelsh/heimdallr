@@ -13,10 +13,13 @@ impl Settings {
         let config_path = var("XDG_CONFIG_HOME")
             .or_else(|_| var("HOME").map(|home| format!("{}/.config/heimdallr.toml", home)))
             .unwrap();
-        let mut s = Config::default();
-        s.merge(File::with_name(config_path.as_str()))?;
 
-        s.try_into()
+        let settings = Config::builder()
+            .add_source(File::with_name(config_path.as_str()))
+            .build()
+            .unwrap();
+
+        settings.try_deserialize()
     }
 }
 
