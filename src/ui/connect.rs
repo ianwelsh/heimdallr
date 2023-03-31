@@ -11,6 +11,7 @@ pub async fn connect(
     ssh_identity_file: String,
     target: &str,
     cmd: Vec<String>,
+    print_only: bool,
 ) -> Result<()> {
     let choices = match target {
         target if target.contains('#') => {
@@ -33,30 +34,53 @@ pub async fn connect(
             let selection_choice = selection
                 .interact()
                 .context("Selection cancelled. Exiting.")?;
-            println!(
-                "{}",
-                &choices[selection_choice].connection(
+
+            if print_only {
+                println!(
+                    "{}",
+                    &choices[selection_choice].connection_string(
+                        dns_name,
+                        bastion_port,
+                        bastion_user,
+                        ec2_user,
+                        ssh_identity_file,
+                        cmd
+                    )
+                );
+            } else {
+                let _ = &choices[selection_choice].connect(
                     dns_name,
                     bastion_port,
                     bastion_user,
                     ec2_user,
                     ssh_identity_file,
-                    cmd
-                )
-            );
+                    cmd,
+                );
+            }
         }
         x if x == 1 => {
-            println!(
-                "{}",
-                &choices[0].connection(
+            if print_only {
+                println!(
+                    "{}",
+                    &choices[0].connection_string(
+                        dns_name,
+                        bastion_port,
+                        bastion_user,
+                        ec2_user,
+                        ssh_identity_file,
+                        cmd
+                    )
+                );
+            } else {
+                let _ = &choices[0].connect(
                     dns_name,
                     bastion_port,
                     bastion_user,
                     ec2_user,
                     ssh_identity_file,
-                    cmd
-                )
-            );
+                    cmd,
+                );
+            }
         }
         _ => {
             println!("No choice match");

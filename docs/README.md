@@ -34,7 +34,7 @@ override when needed.
 ```console
 $ heimdallr --help
 
-heimdallr 0.1.0
+heimdallr 0.3.0
 Connect to AWS EC2 hosts via a Bastion / Jump host
 
 USAGE:
@@ -48,12 +48,13 @@ OPTIONS:
     -p, --profile <profile>    Profile name as specified in your configuration file [default: default]
 
 SUBCOMMANDS:
-    connect    Connect to a running instance
-    grant      Add your IP to a security group to allow ingress
-    help       Prints this message or the help of the given subcommand(s)
-    list       List all running instances
-    revoke     Revoke your IP from a security group to prevent future ingress
-    update     Update this executable to the latest version
+    connect      Connect to a running instance
+    grant        Add your IP to a security group to allow ingress
+    help         Prints this message or the help of the given subcommand(s)
+    list         List all running instances
+    print-ssh    Print SSH command for connecting to running instance
+    revoke       Revoke your IP from a security group to prevent future ingress
+    update       Update this executable to the latest version
 ```
 
 List instances available to connect to.

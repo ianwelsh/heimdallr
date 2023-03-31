@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::fmt;
+use std::process::{Command, Stdio};
 
 #[derive(Clone, Debug)]
 pub struct Container {
@@ -166,7 +167,7 @@ impl Connection {
 }
 
 pub trait SshConnection: fmt::Display {
-    fn connection(
+    fn connection_string(
         &self,
         dns_name: String,
         bastion_port: u16,
@@ -175,6 +176,16 @@ pub trait SshConnection: fmt::Display {
         ssh_identity_file: String,
         cmd: Vec<String>,
     ) -> String;
+
+    fn connect(
+        &self,
+        dns_name: String,
+        bastion_port: u16,
+        bastion_user: String,
+        ec2_user: String,
+        ssh_identity_file: String,
+        cmd: Vec<String>,
+    );
 }
 
 #[derive(Debug)]
@@ -198,7 +209,7 @@ impl fmt::Display for ContainerChoice {
 }
 
 impl SshConnection for ContainerChoice {
-    fn connection(
+    fn connection_string(
         &self,
         dns_name: String,
         bastion_port: u16,
@@ -219,6 +230,40 @@ impl SshConnection for ContainerChoice {
             cmd=cmd.join(" ")
         )
     }
+
+    fn connect(
+        &self,
+        dns_name: String,
+        bastion_port: u16,
+        bastion_user: String,
+        ec2_user: String,
+        ssh_identity_file: String,
+        cmd: Vec<String>,
+    ) {
+        let inner_command = format!(
+            "ssh -o StrictHostKeyChecking=no -A -t {ec2_user}@{ip} \"docker exec -it --detach-keys 'ctrl-q,q' {docker_id} {cmd}\"",
+            ip=self.private_ip,
+            docker_id=&self.runtime_id[..12],
+            cmd=cmd.join(" ")
+        );
+        let mut child = Command::new("ssh")
+            .args([
+                "-o",
+                "StrictHostKeyChecking=no",
+                "-i",
+                ssh_identity_file.as_str(),
+                "-p",
+                bastion_port.to_string().as_str(),
+                "-A",
+                "-t",
+                format!("{bastion_user}@{dns_name}").as_str(),
+                inner_command.as_str(),
+            ])
+            .stdin(Stdio::inherit())
+            .spawn()
+            .expect("SSH failed");
+        child.wait().unwrap();
+    }
 }
 
 pub struct HostConnection {
@@ -238,7 +283,7 @@ impl fmt::Display for HostConnection {
 }
 
 impl SshConnection for HostConnection {
-    fn connection(
+    fn connection_string(
         &self,
         dns_name: String,
         bastion_port: u16,
@@ -257,5 +302,37 @@ impl SshConnection for HostConnection {
             ip=self.private_ip,
             cmd=cmd.join(" ")
         )
+    }
+    fn connect(
+        &self,
+        dns_name: String,
+        bastion_port: u16,
+        bastion_user: String,
+        ec2_user: String,
+        ssh_identity_file: String,
+        cmd: Vec<String>,
+    ) {
+        let inner_command = format!(
+            "ssh -o StrictHostKeyChecking=no -A -t {ec2_user}@{ip} {cmd}",
+            ip = self.private_ip,
+            cmd = cmd.join(" ")
+        );
+        let mut child = Command::new("ssh")
+            .args([
+                "-o",
+                "StrictHostKeyChecking=no",
+                "-i",
+                ssh_identity_file.as_str(),
+                "-p",
+                bastion_port.to_string().as_str(),
+                "-A",
+                "-t",
+                format!("{bastion_user}@{dns_name}").as_str(),
+                inner_command.as_str(),
+            ])
+            .stdin(Stdio::inherit())
+            .spawn()
+            .expect("SSH failed");
+        child.wait().unwrap();
     }
 }
