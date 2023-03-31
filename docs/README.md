@@ -7,6 +7,10 @@
 
 Connect to AWS EC2 hosts via a Bastion / Jump host
 
+## Installation
+
+Binary CI is currently broken. In the meantime, clone the repo and run `cargo install --path .` from the project root.
+
 ## Configuration file
 
 You must create a configuration file located at `~/.config/heimdallr.toml`. An
@@ -85,40 +89,35 @@ Generate the appropriate ssh command to:
 
 ```console
 $ heimdallr --profile default connect StagingInstance1
-ssh -i ~/.ssh/id_rsa -p 1234 -A -t example-user@bastion.example.io ssh -A -t ec2-user@PRIVATE-IP bash
 ```
 
 **Connect to a service running on a specific cluster.**
 
 ```console
 $ heimdallr --profile default connect cluster#service
-ssh -i ~/.ssh/id_rsa -p 1234 -A -t example-user@bastion.example.io "ssh -A -t ec2-user@PRIVATE-IP \"docker exec -it -detach-keys 'ctrl-q,q' SERVICE_CONTAINER_RUNTIME_ID bash\""
 ```
 
 **Connect to a service running on a specific cluster while override configuration options.**
 
 ```console
 $ heimdallr --profile default connect --dns-name bastion-staging.example.io --bastion-user bastion-user cluster#service
-ssh -i ~/.ssh/id_rsa -p 1234 -A -t bastion-user@bastion-staging.example.io "ssh -A -t ec2-user@PRIVATE-IP \"docker exec -it -detach-keys 'ctrl-q,q' SERVICE_CONTAINER_RUNTIME_ID bash\""
 ```
 
 **Connect to a particular container if the service is running multiple tasks**
 
 ```console
 $ heimdallr --profile default connect cluster#service#container
-ssh -i ~/.ssh/id_rsa -p 1234 -A -t example-user@bastion.example.io "ssh -A -t ec2-user@PRIVATE-IP \"docker exec -it -detach-keys 'ctrl-q,q' SERVICE_CONTAINER_RUNTIME_ID bash\""
 ```
 
 **Connect and run arbitrary command**
 
 ```console
 $ heimdallr --profile default connect cluster#service#container ls -lah
-ssh -i ~/.ssh/id_rsa -p 1234 -A -t example-user@bastion.example.io "ssh -A -t ec2-user@PRIVATE-IP \"docker exec -it -detach-keys 'ctrl-q,q' SERVICE_CONTAINER_RUNTIME_ID ls -lah\""
 ```
 
 ## Release process
 
-Install [cargo-make][cargo-make] and run the following command on main.
+Install [cargo-make][cargo-make] and [cargo-bump][cargo-bump], then run the following command on main.
 
 ```console
 cargo make release
@@ -149,3 +148,4 @@ the original project [here][heimdall].
 
 [heimdall]: https://github.com/needcaffeine/heimdall
 [cargo-make]: https://github.com/sagiegurari/cargo-make
+[cargo-bump]: https://github.com/wraithan/cargo-bump
